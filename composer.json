@@ -1,0 +1,30 @@
+{
+    "name": "akturis/seat-winkill",
+    "description": "Plugin to gamble drop from killmail",
+    "type": "seat-plugin",
+    "license": "GPL-2.0-only",
+    "authors": [
+        {
+            "name": "Akturis",
+            "email": "akturis@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "Seat\\Akturis\\WinKill\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Seat\\Akturis\\WinKill\\WinKillServiceProvider"
+            ]
+        }
+    },
+    "require": {
+        "eveseat/services": "^3.0",
+        "eveseat/eveapi": "^3.0",
+        "eveseat/web": "^3.0"
+    }
+}
