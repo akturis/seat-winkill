@@ -1,4 +1,4 @@
-# seat-stats
+# seat-winkill
 Plugin to gamble drop from killmail
 
 
