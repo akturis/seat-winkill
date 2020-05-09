@@ -2,6 +2,8 @@
 
 return [
     'winkill' => [
-        'view'
+        'view',
+        'discord',
+        'settings'
     ],
 ];

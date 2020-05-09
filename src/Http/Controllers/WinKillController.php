@@ -20,23 +20,28 @@ use GuzzleHttp\Client;
 use Seat\Akturis\WinKill\Notifications\KillPosted;
 use Seat\Notifications\Models\Integration;
 use Warlof\Seat\Connector\Models\User as UserDiscord;
+use Seat\Akturis\WinKill\Http\Controllers\SendDiscordController;
 
 class WinKillController extends Controller
 {
     use Notifiable;
+    use SendDiscordController;
     
     public $win_items = [];
     public $killmail_id;
     public $integration;
     
     public function __construct() {
+        if(setting('winkill.max_price', true) == ''){
+            setting(['winkill.max_price', 10000000 ], true);
+        }
         $this->integration = Integration::where('name','Win Kill')->first();        
     }
     
     public function index(Request $request) {
-        
         if(!$this->integration){
             $error = 'Missing discord integration with name "Win Kill"';
+            return view('winkill::winkill')->with('error', $error);
         }
         return view('winkill::winkill',compact('error'));
     }
@@ -74,7 +79,7 @@ class WinKillController extends Controller
                 $invType = InvType::with('prices')->where('typeID', $item->item_type_id)->first();
                 $price = optional($invType->prices)->average_price;
                 $name = $invType->typeName;
-                if(($price != NULL) and ($price <= 10000000)) continue;
+                if(($price != NULL) and ($price <= setting('winkill.max_price', true))) continue;
                 for($i=1;$i<=$item->quantity_dropped;$i++){
                     $loot_items[] = ['item_id'=>$item->item_type_id,'name'=>$name,'price'=>$price,'qty'=>1];                 
                 }
@@ -106,9 +111,10 @@ class WinKillController extends Controller
                     }
                 }
             }
-//            dd($data,$characters,$items,$loot_items,$this);
             if(!empty($this->win_items)and($this->integration)){
-                Notification::send($this, new KillPosted());
+                if (auth()->user()->has('winkill.discord')) {
+                    Notification::send($this, new KillPosted());
+                }
             }
             return view('winkill::winkill',['win_items'=>$this->win_items,'killmail_id'=>$this->killmail_id]);
         }

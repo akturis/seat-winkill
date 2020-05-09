@@ -19,7 +19,6 @@ class KillPosted extends Notification
 
     public function toSlack($notifiable)
     {
-//        $attachment = Helper::BuildSlackNotificationAttachment($notifiable);
         $fields = array();
         $content = "**Поздравим победителей розыгрыша!**\n";
         $content .= implode("\n", array_map(function ($entry) {
@@ -30,14 +29,11 @@ class KillPosted extends Notification
                                $entry['item']['qty'].' шт';
                     }, $notifiable->win_items));
 //        dd($notifiable,$notifiable->win_items, $content);
-//        $content .= '<@169173796413112321>';
         return (new SlackMessage)
             ->success()
             ->from('WinKill', ':calendar:')
-//            ->content(trans('calendar::seat.notification_new_operation'))
             ->content($content)
             ->attachment(function ($attachment) use($notifiable) {
-                //dd($attachment);
                 $attachment->title('Winnners for '.sprintf("https://zkillboard.com/kill/%d", $notifiable->killmail_id ));
             });
     }

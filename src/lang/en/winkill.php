@@ -3,6 +3,12 @@
 return [
 
     // General
-    'win.label'                                => 'Win Kill',
-    'win.summary'                                => 'Win Kill',
+    'label'                                     => 'Win Kill',
+    'summary'                                   => 'Win Kill',
+    'killmail'                                  => 'Killmail',
+    'win'                                       => 'Win!',
+    'winners'                                   => 'Winners for',
+    'settings'                                  => 'Settings',
+    'save'                                      => 'Save',
+    'maxprice'                                  => 'Max Price',
 ];
